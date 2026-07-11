@@ -141,7 +141,7 @@ window.openNodeInterface = function (code) {
 
  // Auto-Generate QR Code using Free Image API based on the Asset Code
  document.getElementById('qr-render-sector').innerHTML = `
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maintainiq.demo/asset/${node.code}&bgcolor=0f172a&color=38bdf8" alt="QR Code" style="border: 2px solid #38bdf8; border-radius: 4px;">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://yourusername.github.io/MaintainIQ-Core/public-asset.html?code=${node.code}&bgcolor=0f172a&color=38bdf8" alt="QR Code" style="border: 2px solid #38bdf8; border-radius: 4px;">
     `;
 
  const historyBox = document.getElementById('modal-history-log');
@@ -191,3 +191,58 @@ btnWipeMemory.addEventListener('click', () => {
 
 // Initial Boot
 executeRenderCycle();
+// Target the new AI elements
+const btnRunTriage = document.getElementById('run-triage-engine-btn');
+const inputComplaint = document.getElementById('ai-complaint-input');
+const inputDiagnosticTitle = document.getElementById('diagnostic-title');
+const inputDiagnosticPriority = document.getElementById('diagnostic-priority');
+
+// Simulated AI Triage Logic (Rule-Based Engine)
+function executeAITriageEngine() {
+ const rawPayload = inputComplaint.value.toLowerCase().trim();
+
+ if (!rawPayload) {
+  return alert("Syntax Error: Provide description for AI analysis.");
+ }
+
+ // Change button text to show processing
+ btnRunTriage.innerText = "Analyzing Node Failure...";
+
+ setTimeout(() => {
+  let aiTitle = "General System Anomaly";
+  let aiPriority = "Low";
+
+  // Logic Gates: Checking keywords
+  if (rawPayload.includes("flicker") || rawPayload.includes("hdmi") || rawPayload.includes("display")) {
+   aiTitle = "Display Output Sync Failure";
+   aiPriority = "High";
+  } else if (rawPayload.includes("leak") || rawPayload.includes("water")) {
+   aiTitle = "Coolant / Liquid Containment Breach";
+   aiPriority = "High";
+  } else if (rawPayload.includes("hot") || rawPayload.includes("overheat") || rawPayload.includes("fire")) {
+   aiTitle = "CRITICAL: Thermal Overload Detected";
+   aiPriority = "High";
+  } else if (rawPayload.includes("noise") || rawPayload.includes("sound")) {
+   aiTitle = "Acoustic Anomaly / Hardware Friction";
+   aiPriority = "Low";
+  }
+
+  // Auto-fill the inputs with the AI result
+  inputDiagnosticTitle.value = aiTitle;
+  inputDiagnosticPriority.value = aiPriority;
+
+  // Let the user know they can edit it
+  inputDiagnosticTitle.removeAttribute('readonly');
+  btnRunTriage.innerText = "Triage Complete. Edit if needed.";
+  btnRunTriage.style.background = "#16a34a"; // Turn green
+
+  setTimeout(() => {
+   btnRunTriage.innerText = "Run AI Triage Engine";
+   btnRunTriage.style.background = "#0f172a"; // Revert
+  }, 3000);
+
+ }, 800); // 800ms delay to make it feel like a real AI processing request
+}
+
+// Attach the Event Listener
+btnRunTriage.addEventListener('click', executeAITriageEngine);

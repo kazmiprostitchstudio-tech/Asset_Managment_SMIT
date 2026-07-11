@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Public Asset Info - MaintainIQ</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="system-header" style="padding: 15px">
+      <h1 style="font-size: 1.5rem">Public Asset Scan</h1>
+    </header>
+
+    <div class="motherboard-grid" style="max-width: 600px">
+      <div class="data-sector full-width-sector">
+        <h2 class="sector-title">Hardware Node Details</h2>
+        <div
+          id="public-node-info"
+          style="
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #1e3a8a;
+            font-weight: 600;
+          "
+        >
+          Scanning Mainframe for Payload...
+        </div>
+      </div>
+
+      <div class="data-sector full-width-sector">
+        <h2
+          class="sector-title"
+          style="color: #ea580c; border-bottom-color: #ea580c"
+          >Report Malfunction (Public User)</h2
+        >
+        <input
+          type="text"
+          id="public-issue-title"
+          class="input-terminal"
+          placeholder="What is the problem? (e.g. Broken wire)"
+        />
+        <button id="public-submit-btn" class="compiler-trigger warning-trigger"
+          >Submit Public Report</button
+        >
+        <div
+          id="success-msg"
+          style="
+            color: #16a34a;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+          "
+          >[✓] Issue logged to central mainframe!</div
+        >
+      </div>
+    </div>
+
+    <script>
+      // Logic to read the asset code from the URL (e.g. public-asset.html?code=PRJ-01)
+      const urlParams = new URLSearchParams(window.location.search);
+      const nodeCode = urlParams.get('code');
+      const db = JSON.parse(localStorage.getItem('MaintainIQ_DB')) || [];
+
+      const targetNode = db.find((n) => n.code === nodeCode);
+      const infoDiv = document.getElementById('public-node-info');
+
+      if (targetNode) {
+        infoDiv.innerHTML = `
+                Asset Code: <span style="color: #16a34a;">${targetNode.code}</span><br>
+                Designation: ${targetNode.desig}<br>
+                Category: ${targetNode.category}<br>
+                Current Status: <span style="color: ${targetNode.status === 'Operational' ? '#16a34a' : '#ea580c'};">${targetNode.status}</span>
+            `;
+      } else {
+        infoDiv.innerHTML = `<span style="color: red;">Error 404: Asset Payload Not Found in System.</span>`;
+        document.getElementById('public-submit-btn').disabled = true;
+      }
+
+      // Logic to let public submit an issue
+      document
+        .getElementById('public-submit-btn')
+        .addEventListener('click', () => {
+          const issueText = document
+            .getElementById('public-issue-title')
+            .value.trim();
+          if (!issueText) return alert('Please describe the issue.');
+
+          targetNode.status = 'Issue Reported';
+          targetNode.history.push(
+            `[PUBLIC REPORT] ${issueText} - ${new Date().toLocaleTimeString()}`
+          );
+
+          localStorage.setItem('MaintainIQ_DB', JSON.stringify(db));
+
+          document.getElementById('public-issue-title').value = '';
+          document.getElementById('success-msg').style.display = 'block';
+
+          // Reload info to show updated status
+          setTimeout(() => location.reload(), 2000);
+        });
+    </script>
+  </body>
+</html>

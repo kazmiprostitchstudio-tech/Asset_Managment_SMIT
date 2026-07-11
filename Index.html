@@ -10,7 +10,7 @@
     <header class="system-header">
       <h1>MaintainIQ - Central Command</h1>
       <div class="user-auth-module">
-        <span>Admin: Muhammad Muslim Raza</span> |
+        <span>Admin: Syed Hassan Kazmi</span> |
         <span>Supervisor: SMuzamil</span>
       </div>
     </header>
@@ -54,19 +54,43 @@
 
       <div class="data-sector diagnostic-module">
         <h2 class="sector-title">Execute Diagnostic (Report Issue)</h2>
-        <select id="diagnostic-target-select" class="input-terminal"> </select>
+        <select id="diagnostic-target-select" class="input-terminal"></select>
+
+        <label style="font-size: 0.85rem; color: #1e3a8a; font-weight: 600"
+          >Describe the failure (AI will analyze):</label
+        >
+        <textarea
+          id="ai-complaint-input"
+          class="input-terminal"
+          rows="3"
+          placeholder="e.g., The projector display is flickering and not detecting HDMI..."
+        ></textarea>
+
+        <button
+          id="run-triage-engine-btn"
+          class="compiler-trigger"
+          style="
+            background: #0f172a;
+            border-bottom: 3px solid #38bdf8;
+            color: white;
+          "
+          >Run AI Triage Engine</button
+        >
+
         <input
           type="text"
           id="diagnostic-title"
           class="input-terminal"
-          placeholder="Issue Title (e.g. Flickering Display)"
+          placeholder="AI Suggested Title"
+          readonly
         />
         <select id="diagnostic-priority" class="input-terminal">
           <option value="Low">Low Priority</option>
           <option value="High">High Priority</option>
         </select>
+
         <button id="log-diagnostic-btn" class="compiler-trigger warning-trigger"
-          >Log Failure Protocol</button
+          >Confirm & Log Protocol</button
         >
       </div>
 
