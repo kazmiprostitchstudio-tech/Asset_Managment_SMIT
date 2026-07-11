@@ -1,4 +1,12 @@
-/* Core System Reset */
+/* --- MAINTAIN-IQ ENTERPRISE CSS --- */
+:root {
+  --primary: #1e3a8a;
+  --secondary: #2563eb;
+  --accent: #16a34a;
+  --danger: #dc2626;
+  --bg-body: #f1f5f9;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,20 +14,17 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Professional Enterprise Background */
 body {
-  background-color: #f1f5f9;
+  background-color: var(--bg-body);
   color: #334155;
   padding-bottom: 50px;
 }
 
-/* Saylani Branded Header */
 .system-header {
-  background: linear-gradient(90deg, #1e3a8a, #2563eb);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   padding: 25px 20px;
   text-align: center;
-  border-bottom: 5px solid #16a34a;
-  margin-bottom: 30px;
+  border-bottom: 5px solid var(--accent);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
@@ -38,34 +43,33 @@ body {
   font-weight: 500;
 }
 
-/* Responsive Grid */
 .motherboard-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 25px;
   max-width: 1250px;
-  margin: 0 auto;
+  margin: 25px auto;
   padding: 0 20px;
 }
 
-/* White Corporate Panels (Cards) */
 .data-sector {
   background: #ffffff;
   padding: 30px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   flex: 1 1 350px;
-  transition: transform 0.2s ease-in-out;
+  transition: 0.3s;
 }
 
 .data-sector:hover {
-  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .full-width-sector {
   flex: 1 1 100%;
 }
+
 .control-panel {
   flex: 1 1 100%;
   display: flex;
@@ -73,131 +77,87 @@ body {
   align-items: center;
 }
 
-/* Panel Titles */
 .sector-title {
-  color: #1e3a8a;
+  color: var(--primary);
   margin-bottom: 20px;
   font-size: 1.3rem;
   font-weight: 700;
   text-transform: uppercase;
-  border-bottom: 2px solid #16a34a;
+  border-bottom: 2px solid var(--accent);
   padding-bottom: 8px;
 }
 
-/* Inputs & Forms */
 .input-terminal {
   width: 100%;
   padding: 12px 15px;
   margin-bottom: 15px;
   border: 1px solid #cbd5e1;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #f8fafc;
-  color: #0f172a;
-  font-size: 0.95rem;
   outline: none;
-  transition: all 0.3s ease;
 }
 
-.input-terminal:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-  background: #ffffff;
-}
-
-/* Buttons - Saylani Green & Blue Logic */
 .compiler-trigger {
   width: 100%;
   padding: 14px;
-  background: #16a34a;
+  background: var(--accent);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  margin-bottom: 10px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.compiler-trigger:hover {
-  background: #15803d;
-  box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2);
+.compiler-trigger:active {
+  transform: scale(0.98);
 }
 
 .error-trigger {
-  background: #dc2626;
-}
-.error-trigger:hover {
-  background: #b91c1c;
+  background: var(--danger);
 }
 
 .warning-trigger {
-  background: #2563eb;
-}
-.warning-trigger:hover {
-  background: #1d4ed8;
+  background: var(--secondary);
 }
 
-.success-trigger {
-  background: #16a34a;
-}
-.success-trigger:hover {
-  background: #15803d;
-}
-
-/* Active Asset Grid Output */
 .output-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
 }
 
-/* Individual Asset Cards */
 .node-packet {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  border-left: 5px solid #16a34a;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  position: relative;
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  border-left: 6px solid var(--accent);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .node-packet.status-issue {
-  border-left-color: #ef4444;
+  border-left-color: var(--danger);
   background: #fef2f2;
 }
 
-.node-packet h3 {
-  color: #1e3a8a;
-  font-size: 1.2rem;
-  margin-bottom: 8px;
-  font-weight: 700;
-}
-
 .node-action-btn {
+  width: 100%;
   background: #f1f5f9;
-  color: #1e3a8a;
+  color: var(--primary);
   border: 1px solid #cbd5e1;
-  padding: 8px 15px;
-  border-radius: 4px;
+  padding: 10px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 0.85rem;
   margin-top: 15px;
-  transition: 0.2s;
-  width: 100%; /* Made full width for better mobile tapping */
 }
 
 .node-action-btn:hover {
-  background: #2563eb;
+  background: var(--secondary);
   color: white;
-  border-color: #2563eb;
 }
 
-/* Modal / Popup Protocol */
+/* FIXED MODAL STYLE FOR SCROLLING */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -208,9 +168,10 @@ body {
   backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Fix for scrolling */
   z-index: 1000;
-  padding: 15px; /* Added padding so it doesn't touch screen edges on mobile */
+  padding: 15px;
+  overflow-y: auto; /* Enable vertical scroll */
 }
 
 .modal-overlay.hidden {
@@ -218,48 +179,44 @@ body {
 }
 
 .modal-sector {
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 12px;
+  background: white;
+  padding: 35px;
+  border-radius: 16px;
   width: 100%;
-  max-width: 550px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-width: 500px;
+  margin: 50px 0; /* Margin top/bottom */
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .output-log {
   background: #f8fafc;
   padding: 15px;
   font-size: 0.9rem;
-  height: 180px;
+  height: 150px;
   overflow-y: auto;
-  color: #334155;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
-  line-height: 1.5;
 }
 
-/* --- MOBILE RESPONSIVENESS (NEW) --- */
 @media screen and (max-width: 768px) {
   .system-header h1 {
     font-size: 1.5rem;
   }
-
   .control-panel {
     flex-direction: column;
   }
-
-  .data-sector {
-    padding: 20px;
-    flex: 1 1 100%;
-  }
-
   .output-grid {
-    grid-template-columns: 1fr; /* Stacks cards on top of each other on phones */
-  }
-
-  .modal-sector {
-    padding: 20px;
+    grid-template-columns: 1fr;
   }
 }

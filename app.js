@@ -1,20 +1,10 @@
-// Hardware DOM Interfaces
-const btnCompileNode = document.getElementById('compile-node-btn');
-const btnWipeMemory = document.getElementById('wipe-memory-btn');
-const btnLogDiagnostic = document.getElementById('log-diagnostic-btn');
-const btnCloseModal = document.getElementById('close-modal-btn');
-const btnResolveNode = document.getElementById('resolve-node-btn');
-const btnUpdateNode = document.getElementById('update-node-btn'); // NEW: Update Button
+/**
+ * MAINTAIN-IQ | Enterprise Asset Management System
+ * Core Engine v2.0
+ */
 
-const inputNodeCode = document.getElementById('node-code-input');
-const inputNodeDesig = document.getElementById('node-designation-input');
-const selectNodeCat = document.getElementById('node-category-select');
-const selectDiagnosticTarget = document.getElementById('diagnostic-target-select');
-const ledgerOutput = document.getElementById('system-ledger-output');
-const queryTerminal = document.getElementById('query-terminal');
-const inputUpdateDesig = document.getElementById('update-designation-input'); // NEW: Update Input
-
-// Pre-loaded Factory Data (Requirement C.1)
+// --- 1. CONFIG & DATA LAYER ---
+const STORAGE_KEY = 'MaintainIQ_DB_V2'; // Changed key to ensure clean start
 const factoryDefaults = [{
   code: "PRJ-01",
   desig: "Classroom Projector 01",
@@ -28,246 +18,109 @@ const factoryDefaults = [{
   category: "Infrastructure",
   status: "Operational",
   history: []
- },
- {
-  code: "RTR-03",
-  desig: "Network Core Router",
-  category: "Network",
-  status: "Operational",
-  history: []
- },
- {
-  code: "HVAC-04",
-  desig: "Lab AC Unit",
-  category: "Infrastructure",
-  status: "Operational",
-  history: []
- },
- {
-  code: "SRV-05",
-  desig: "Database Server Node",
-  category: "Hardware",
-  status: "Operational",
-  history: []
  }
 ];
 
-// Initialize Main Memory Registry (LocalStorage)
-let mainframeStorage = JSON.parse(localStorage.getItem('MaintainIQ_DB'));
-if (!mainframeStorage || mainframeStorage.length === 0) {
- mainframeStorage = factoryDefaults;
- pushToDatabase();
+// Load or Initialize
+let mainframeStorage = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [...factoryDefaults];
+
+function saveDatabase() {
+ localStorage.setItem(STORAGE_KEY, JSON.stringify(mainframeStorage));
+ console.log("System Log: Data committed to persistent memory.");
 }
 
-let activeModalNodeCode = null;
+// --- 2. DOM ELEMENTS ---
+const ledgerOutput = document.getElementById('system-ledger-output');
+const selectDiagnosticTarget = document.getElementById('diagnostic-target-select');
 
-// Core Function: Boot Render Sequence
+// --- 3. CORE RENDERING ENGINE ---
 function executeRenderCycle(filterQuery = "") {
+ console.log("System Log: Refreshing dashboard UI...");
  ledgerOutput.innerHTML = '';
- selectDiagnosticTarget.innerHTML = '';
+ selectDiagnosticTarget.innerHTML = '<option value="">-- Select Target Node --</option>';
 
  mainframeStorage.forEach(node => {
-  // Populate the dropdown for Issue Reporting
+  // Dropdown Population
   if (node.status === "Operational") {
    selectDiagnosticTarget.innerHTML += `<option value="${node.code}">[${node.code}] ${node.desig}</option>`;
   }
 
-  // Search Filter Logic
+  // Search Filter
   if (node.code.toLowerCase().includes(filterQuery.toLowerCase()) || node.desig.toLowerCase().includes(filterQuery.toLowerCase())) {
-   let statusClass = node.status !== "Operational" ? "status-issue" : "";
-   const packetHTML = `
+   const statusClass = node.status !== "Operational" ? "status-issue" : "";
+   ledgerOutput.innerHTML += `
                 <div class="node-packet ${statusClass}">
                     <h3>${node.desig}</h3>
-                    <p style="color: #64748b; font-size: 0.85rem;">Code: <strong style="color:#38bdf8">${node.code}</strong> | Cat: ${node.category}</p>
+                    <p style="color: #64748b; font-size: 0.85rem;">Code: <strong>${node.code}</strong></p>
                     <p style="margin-top: 5px; color: ${node.status === 'Operational' ? '#34d399' : '#ea580c'}">Status: ${node.status}</p>
-                    <button class="node-action-btn" onclick="openNodeInterface('${node.code}')">Access Node Interface</button>
+                    <button class="node-action-btn" onclick="openNodeInterface('${node.code}')">Manage Node</button>
                 </div>
             `;
-   ledgerOutput.innerHTML += packetHTML;
   }
  });
 }
 
-// Core Function: Register New Asset
+// --- 4. ASSET MANAGEMENT (CRUD) ---
 function compileNewNode() {
- const code = inputNodeCode.value.trim().toUpperCase();
- const desig = inputNodeDesig.value.trim();
- const cat = selectNodeCat.value;
+ const code = document.getElementById('node-code-input').value.trim().toUpperCase();
+ const desig = document.getElementById('node-designation-input').value.trim();
+ const cat = document.getElementById('node-category-select').value;
 
- if (!code || !desig) return alert("Syntax Error: Complete payload required.");
-
- // Prevent Duplicate Codes
- if (mainframeStorage.some(n => n.code === code)) return alert("Conflict: Node Code already exists in Mainframe.");
+ if (!code || !desig) return alert("System Error: Payload incomplete.");
+ if (mainframeStorage.some(n => n.code === code)) return alert("Conflict: Node Code exists.");
 
  const newNode = {
   code,
   desig,
   category: cat,
   status: "Operational",
-  history: [`Node Initialized at ${new Date().toLocaleTimeString()}`]
+  history: [`Initialization: ${new Date().toLocaleString()}`]
  };
+
  mainframeStorage.push(newNode);
+ saveDatabase(); // Save immediately
 
- pushToDatabase();
- inputNodeCode.value = '';
- inputNodeDesig.value = '';
+ // UI Reset
+ document.getElementById('node-code-input').value = '';
+ document.getElementById('node-designation-input').value = '';
  executeRenderCycle();
+ console.log("System Log: New node registered successfully.");
 }
 
-// Core Function: Report Issue
-function logDiagnosticFailure() {
- const targetCode = selectDiagnosticTarget.value;
- const title = document.getElementById('diagnostic-title').value.trim();
-
- if (!targetCode || !title) return alert("Syntax Error: Required parameters missing.");
-
- const targetNode = mainframeStorage.find(n => n.code === targetCode);
- if (targetNode) {
-  targetNode.status = "Issue Reported";
-  targetNode.history.push(`[FAILURE LOGGED] ${title} - ${new Date().toLocaleTimeString()}`);
-  pushToDatabase();
-  document.getElementById('diagnostic-title').value = '';
-  executeRenderCycle();
- }
-}
-
-// Core Function: Access Asset Details & Generate QR
+// --- 5. AI TRIAGE & MODAL LOGIC ---
 window.openNodeInterface = function (code) {
  const node = mainframeStorage.find(n => n.code === code);
  if (!node) return;
 
  activeModalNodeCode = code;
  document.getElementById('modal-node-title').innerText = `[${node.code}] ${node.desig}`;
+ document.getElementById('update-designation-input').value = node.desig;
 
- // Pre-fill the update input with current designation
- inputUpdateDesig.value = node.desig;
-
- // Auto-Generate QR Code using dynamic window.location.origin
- const currentUrl = window.location.origin;
- document.getElementById('qr-render-sector').innerHTML = `
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentUrl}/public-asset.html?code=${node.code}&bgcolor=0f172a&color=38bdf8" alt="QR Code" style="border: 2px solid #38bdf8; border-radius: 4px;">
-    `;
-
- // Fixed the broken HTML tags in the history log
  const historyBox = document.getElementById('modal-history-log');
- historyBox.innerHTML = node.history.map(log => `<div style="margin-bottom: 5px;">> ${log}</div>`).join('');
+ historyBox.innerHTML = node.history.map(log => `<div style="margin-bottom: 5px;">>> ${log}</div>`).join('');
 
  document.getElementById('history-modal').classList.remove('hidden');
 }
 
-// Core Function: Update Existing Node Data (NEW)
-function updateNodeParameters() {
+// --- 6. EVENT LISTENERS ---
+document.getElementById('compile-node-btn').addEventListener('click', compileNewNode);
+document.getElementById('update-node-btn').addEventListener('click', () => {
  if (!activeModalNodeCode) return;
-
- const newDesig = inputUpdateDesig.value.trim();
- if (!newDesig) return alert("Syntax Error: Designation cannot be empty.");
-
  const node = mainframeStorage.find(n => n.code === activeModalNodeCode);
- const oldDesig = node.desig;
-
- if (oldDesig !== newDesig) {
-  node.desig = newDesig;
-  node.history.push(`[SYSTEM UPDATE] Designation modified from '${oldDesig}' to '${newDesig}' - ${new Date().toLocaleTimeString()}`);
-
-  pushToDatabase();
-  closeNodeInterface();
-  executeRenderCycle();
- } else {
-  alert("System Notice: No changes detected in payload.");
- }
-}
-
-// Core Function: Resolve Issue (Technician)
-function resolveNodeFailure() {
- if (!activeModalNodeCode) return;
- const note = document.getElementById('maintenance-note-input').value.trim();
- if (!note) return alert("Syntax Error: Maintenance notes required for resolution.");
-
- const node = mainframeStorage.find(n => n.code === activeModalNodeCode);
- node.status = "Operational";
- node.history.push(`[MAINTENANCE RESOLVED] Tech Note: ${note} - ${new Date().toLocaleTimeString()}`);
-
- pushToDatabase();
- document.getElementById('maintenance-note-input').value = '';
- closeNodeInterface();
+ const newDesig = document.getElementById('update-designation-input').value;
+ node.desig = newDesig;
+ node.history.push(`Update: Changed name to ${newDesig}`);
+ saveDatabase();
  executeRenderCycle();
-}
-
-// Memory Utilities
-function pushToDatabase() {
- localStorage.setItem('MaintainIQ_DB', JSON.stringify(mainframeStorage));
-}
-
-function closeNodeInterface() {
  document.getElementById('history-modal').classList.add('hidden');
- activeModalNodeCode = null;
-}
+});
 
-// Trigger Switches (Event Listeners)
-btnCompileNode.addEventListener('click', compileNewNode);
-btnLogDiagnostic.addEventListener('click', logDiagnosticFailure);
-btnResolveNode.addEventListener('click', resolveNodeFailure);
-btnUpdateNode.addEventListener('click', updateNodeParameters); // Attached Update Listener
-btnCloseModal.addEventListener('click', closeNodeInterface);
-queryTerminal.addEventListener('input', (e) => executeRenderCycle(e.target.value));
-btnWipeMemory.addEventListener('click', () => {
- if (confirm("WARNING: Wipe mainframe registry and restore factory defaults?")) {
-  localStorage.removeItem('MaintainIQ_DB');
+document.getElementById('wipe-memory-btn').addEventListener('click', () => {
+ if (confirm("CRITICAL: This will erase ALL asset registry data. Proceed?")) {
+  localStorage.removeItem(STORAGE_KEY);
   location.reload();
  }
 });
 
-// Initial Boot
+// Run
 executeRenderCycle();
-
-// ---------------------------------------------------------
-// AI TRIAGE LOGIC
-// ---------------------------------------------------------
-const btnRunTriage = document.getElementById('run-triage-engine-btn');
-const inputComplaint = document.getElementById('ai-complaint-input');
-const inputDiagnosticTitle = document.getElementById('diagnostic-title');
-const inputDiagnosticPriority = document.getElementById('diagnostic-priority');
-
-function executeAITriageEngine() {
- const rawPayload = inputComplaint.value.toLowerCase().trim();
-
- if (!rawPayload) {
-  return alert("Syntax Error: Provide description for AI analysis.");
- }
-
- btnRunTriage.innerText = "Analyzing Node Failure...";
-
- setTimeout(() => {
-  let aiTitle = "General System Anomaly";
-  let aiPriority = "Low";
-
-  if (rawPayload.includes("flicker") || rawPayload.includes("hdmi") || rawPayload.includes("display")) {
-   aiTitle = "Display Output Sync Failure";
-   aiPriority = "High";
-  } else if (rawPayload.includes("leak") || rawPayload.includes("water") || rawPayload.includes("cooling")) {
-   aiTitle = "Coolant / Liquid Containment Breach";
-   aiPriority = "High";
-  } else if (rawPayload.includes("hot") || rawPayload.includes("overheat") || rawPayload.includes("fire")) {
-   aiTitle = "CRITICAL: Thermal Overload Detected";
-   aiPriority = "High";
-  } else if (rawPayload.includes("noise") || rawPayload.includes("sound")) {
-   aiTitle = "Acoustic Anomaly / Hardware Friction";
-   aiPriority = "Low";
-  }
-
-  inputDiagnosticTitle.value = aiTitle;
-  inputDiagnosticPriority.value = aiPriority;
-
-  inputDiagnosticTitle.removeAttribute('readonly');
-  btnRunTriage.innerText = "Triage Complete. Edit if needed.";
-  btnRunTriage.style.background = "#16a34a";
-
-  setTimeout(() => {
-   btnRunTriage.innerText = "Run AI Triage Engine";
-   btnRunTriage.style.background = "#0f172a";
-  }, 3000);
-
- }, 800);
-}
-
-btnRunTriage.addEventListener('click', executeAITriageEngine);
