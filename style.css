@@ -1,0 +1,244 @@
+/* Core System Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family:
+    "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Switched to a clean corporate font */
+}
+
+/* Professional Enterprise Background */
+body {
+  background-color: #f1f5f9; /* Soft light gray for less eye strain */
+  color: #334155;
+  padding-bottom: 50px;
+}
+
+/* Saylani Branded Header */
+.system-header {
+  background: linear-gradient(
+    90deg,
+    #1e3a8a,
+    #2563eb
+  ); /* Saylani Deep Blue Gradient */
+  padding: 25px 20px;
+  text-align: center;
+  border-bottom: 5px solid #16a34a; /* Saylani Vibrant Green Accent */
+  margin-bottom: 30px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.system-header h1 {
+  color: #ffffff;
+  text-transform: uppercase;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.user-auth-module {
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+/* Responsive Grid */
+.motherboard-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* White Corporate Panels (Cards) */
+.data-sector {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); /* Soft, professional shadow */
+  flex: 1 1 350px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.data-sector:hover {
+  transform: translateY(-2px);
+}
+
+.full-width-sector {
+  flex: 1 1 100%;
+}
+.control-panel {
+  flex: 1 1 100%;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+/* Panel Titles */
+.sector-title {
+  color: #1e3a8a; /* Saylani Blue */
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-bottom: 2px solid #16a34a; /* Green underline */
+  padding-bottom: 8px;
+}
+
+/* Inputs & Forms */
+.input-terminal {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-terminal:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  background: #ffffff;
+}
+
+/* Buttons - Saylani Green & Blue Logic */
+.compiler-trigger {
+  width: 100%;
+  padding: 14px;
+  background: #16a34a; /* Saylani Green for primary actions */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.compiler-trigger:hover {
+  background: #15803d;
+  box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2);
+}
+
+.error-trigger {
+  background: #dc2626;
+} /* Red for Wiping Data */
+.error-trigger:hover {
+  background: #b91c1c;
+}
+
+.warning-trigger {
+  background: #2563eb;
+} /* Blue for Logging Issues */
+.warning-trigger:hover {
+  background: #1d4ed8;
+}
+
+.success-trigger {
+  background: #16a34a;
+} /* Green for Resolution */
+.success-trigger:hover {
+  background: #15803d;
+}
+
+/* Active Asset Grid Output */
+.output-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* Individual Asset Cards */
+.node-packet {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  border-left: 5px solid #16a34a; /* Green for Operational */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.node-packet.status-issue {
+  border-left-color: #ef4444; /* Red for Issues */
+  background: #fef2f2;
+}
+
+.node-packet h3 {
+  color: #1e3a8a;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.node-action-btn {
+  background: #f1f5f9;
+  color: #1e3a8a;
+  border: 1px solid #cbd5e1;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-top: 15px;
+  transition: 0.2s;
+}
+
+.node-action-btn:hover {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+/* Modal / Popup Protocol */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.6); /* Soft dark overlay */
+  backdrop-filter: blur(4px); /* Modern blur effect */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-sector {
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 550px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.output-log {
+  background: #f8fafc;
+  padding: 15px;
+  font-size: 0.9rem;
+  height: 180px;
+  overflow-y: auto;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  line-height: 1.5;
+}
