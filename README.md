@@ -1,34 +1,40 @@
-# Asset_Managment_SMIT
+# MaintainIQ - Asset Lifecycle Management (Track C)
 
-Hackthon project (SMIT)
+**Developer:** Syed Muhammad Hassan Kazmi
+**Hackathon:** SMIT First Hackathon (Saylani IT)
 
-# MaintainIQ - System Core (Track C)
+## 🚀 Overview
 
-**Developer:** Syed Hassan Kazmi  
-**Hackathon:** SMIT Final Hackathon (Saylani IT)
+MaintainIQ is a professional, AI-powered asset lifecycle platform. It provides physical hardware nodes with a digital identity, generates automated QR protocols, and centralizes issue reporting through a custom-built rule-based Artificial Intelligence triage engine.
 
-## Overview
+## 🛠 Core Features
 
-MaintainIQ is a professional, AI-powered asset lifecycle platform. It gives physical hardware nodes a digital identity, generates automated QR protocols, and centralizes issue reporting through a simulated Artificial Intelligence triage engine.
+- **Node Registry:** Comprehensive dashboard to initialize and manage hardware assets.
+- **Persistent Mainframe:** Uses `localStorage` to ensure data persistence across sessions.
+- **AI Triage Engine:** Custom rule-based engine that automatically classifies hardware failures based on natural language descriptions (Priority/Category).
+- **Dynamic QR Generation:** Auto-generates unique QR codes for each asset, linking directly to the public status page.
+- **Responsive Enterprise UI:** Modern, Saylani-branded UI built with custom CSS for a professional enterprise experience.
+- **Full CRUD Support:** Create, Read, Update, and Delete capabilities for node parameters.
 
-## Core Features Implemented
+## ⚙️ Technical Stack
 
-- **Pre-Loaded Node Registry:** System boots with 5 factory-default assets to demonstrate a live operational dashboard.
-- **Persistent Mainframe (LocalStorage):** Full read/write database simulated on the client side. Data survives system reboots (page refreshes).
-- **Simulated AI Triage Engine:** A custom, rule-based logic engine that analyzes natural-language hardware complaints and automatically classifies the failure priority and category.
-- **Automated QR Compilation:** Generates live QR codes using a REST API strictly linked to the unique Asset Code.
-- **Responsive Enterprise UI:** Styled using a professional, modern CSS architecture tailored to the Saylani Welfare corporate color palette (Deep Blue & Vibrant Green).
+- **Frontend:** HTML5, CSS3 (Responsive Design)
+- **Logic:** Vanilla JavaScript (ES6+)
+- **Persistence:** Browser `localStorage`
+- **Deployment:** Vercel / GitHub Pages
 
-## How to Deploy
+## 📂 Live Demonstration Protocol
 
-1. Extract the project files.
-2. Open `index.html` in any modern web browser.
-3. Use the **Control Panel** to test search filtering or reset the demo memory.
+1. **Access:** Login via the secure gateway.
+2. **Registry:** View or initialize assets from the Central Command.
+3. **Diagnostic:** Use the AI Triage Engine to report failures.
+4. **Technician Portal:** Access node history and generate QR codes for maintenance.
+5. **Resolution:** Update status and resolve nodes with maintenance notes.
 
-## Live Demonstration Protocol
+## 🔗 Project Link
 
-1. Select an operational asset from the registry.
-2. Type a natural language complaint (e.g., "The display is flickering").
-3. Click "Run AI Triage Engine" to see the system auto-classify the priority.
-4. Log the failure and access the Node Interface to view the QR code and history timeline.
-5. Apply a maintenance note and restore the node to full operational status.
+[Click here to view the live dashboard](PASTE_YOUR_VERCEL_LINK_HERE)
+
+---
+
+_Built with passion for the SMIT Hackathon 2026._

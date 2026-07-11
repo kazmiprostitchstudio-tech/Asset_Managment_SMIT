@@ -3,132 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MaintainIQ - Hardware Registry</title>
+    <title>MaintainIQ - Secure Gateway</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <header class="system-header">
-      <h1>MaintainIQ - Central Command</h1>
-      <div class="user-auth-module">
-        <span>Admin: Syed Hassan Kazmi</span> |
-        <span>Supervisor: SMuzamil</span>
-      </div>
-    </header>
-
-    <div class="motherboard-grid">
-      <div class="data-sector control-panel">
-        <input
-          type="text"
-          id="query-terminal"
-          class="input-terminal"
-          placeholder="Search Node Designation or Code..."
-        />
-        <button id="wipe-memory-btn" class="compiler-trigger error-trigger"
-          >Reset Demo Memory</button
+  <body
+    style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f1f5f9;
+    "
+  >
+    <div
+      class="data-sector"
+      style="max-width: 400px; text-align: center; width: 100%"
+    >
+      <div
+        style="
+          background: #1e3a8a;
+          padding: 15px;
+          border-radius: 6px;
+          margin-bottom: 20px;
+        "
+      >
+        <h1 style="color: white; font-size: 1.5rem; letter-spacing: 1px"
+          >MAINTAIN-IQ</h1
         >
       </div>
 
-      <div class="data-sector registry-module">
-        <h2 class="sector-title">Initialize Node (Add Asset)</h2>
-        <input
-          type="text"
-          id="node-code-input"
-          class="input-terminal"
-          placeholder="Node Code (e.g. PRJ-01)"
-        />
-        <input
-          type="text"
-          id="node-designation-input"
-          class="input-terminal"
-          placeholder="Designation (e.g. Classroom Projector 01)"
-        />
-        <select id="node-category-select" class="input-terminal">
-          <option value="Hardware">Hardware</option>
-          <option value="Infrastructure">Infrastructure</option>
-          <option value="Network">Network Device</option>
-        </select>
-        <button id="compile-node-btn" class="compiler-trigger"
-          >Register Payload</button
-        >
-      </div>
+      <h2 class="sector-title" style="font-size: 1.1rem; margin-bottom: 25px"
+        >Admin Authentication Protocol</h2
+      >
 
-      <div class="data-sector diagnostic-module">
-        <h2 class="sector-title">Execute Diagnostic (Report Issue)</h2>
-        <select id="diagnostic-target-select" class="input-terminal"></select>
+      <input
+        type="text"
+        id="auth-user"
+        class="input-terminal"
+        placeholder="System ID (Type anything...)"
+        value="admin_smit"
+      />
+      <input
+        type="password"
+        id="auth-pass"
+        class="input-terminal"
+        placeholder="Passcode"
+        value="123456"
+      />
 
-        <label style="font-size: 0.85rem; color: #1e3a8a; font-weight: 600"
-          >Describe the failure (AI will analyze):</label
-        >
-        <textarea
-          id="ai-complaint-input"
-          class="input-terminal"
-          rows="3"
-          placeholder="e.g., The projector display is flickering and not detecting HDMI..."
-        ></textarea>
+      <button
+        onclick="window.location.href='dashboard.html'"
+        class="compiler-trigger"
+        style="margin-top: 10px"
+        >Initialize Secure Session</button
+      >
 
-        <button
-          id="run-triage-engine-btn"
-          class="compiler-trigger"
-          style="
-            background: #0f172a;
-            border-bottom: 3px solid #38bdf8;
-            color: white;
-          "
-          >Run AI Triage Engine</button
-        >
-
-        <input
-          type="text"
-          id="diagnostic-title"
-          class="input-terminal"
-          placeholder="AI Suggested Title"
-          readonly
-        />
-        <select id="diagnostic-priority" class="input-terminal">
-          <option value="Low">Low Priority</option>
-          <option value="High">High Priority</option>
-        </select>
-
-        <button id="log-diagnostic-btn" class="compiler-trigger warning-trigger"
-          >Confirm & Log Protocol</button
-        >
-      </div>
-
-      <div class="data-sector full-width-sector">
-        <h2 class="sector-title">Active Node Registry (Asset List)</h2>
-        <div id="system-ledger-output" class="output-grid"> </div>
-      </div>
+      <p style="font-size: 0.8rem; color: #64748b; margin-top: 15px"
+        >Authorized Personnel Only</p
+      >
     </div>
-
-    <div id="history-modal" class="modal-overlay hidden">
-      <div class="modal-sector">
-        <h2 class="sector-title" id="modal-node-title">Node Data</h2>
-        <div
-          id="qr-render-sector"
-          style="text-align: center; margin-bottom: 15px"
-        ></div>
-        <div id="modal-history-log" class="output-log"></div>
-
-        <hr style="border-color: #334155; margin: 15px 0" />
-
-        <h3 class="sector-title" style="font-size: 1rem"
-          >Technician Interface</h3
-        >
-        <input
-          type="text"
-          id="maintenance-note-input"
-          class="input-terminal"
-          placeholder="Enter maintenance notes..."
-        />
-        <button id="resolve-node-btn" class="compiler-trigger success-trigger"
-          >Resolve & Restore Node</button
-        >
-        <button id="close-modal-btn" class="compiler-trigger"
-          >Terminate Connection (Close)</button
-        >
-      </div>
-    </div>
-
-    <script src="app.js"></script>
   </body>
 </html>

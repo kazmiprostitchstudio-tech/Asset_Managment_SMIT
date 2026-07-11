@@ -4,6 +4,7 @@ const btnWipeMemory = document.getElementById('wipe-memory-btn');
 const btnLogDiagnostic = document.getElementById('log-diagnostic-btn');
 const btnCloseModal = document.getElementById('close-modal-btn');
 const btnResolveNode = document.getElementById('resolve-node-btn');
+const btnUpdateNode = document.getElementById('update-node-btn'); // NEW: Update Button
 
 const inputNodeCode = document.getElementById('node-code-input');
 const inputNodeDesig = document.getElementById('node-designation-input');
@@ -11,6 +12,7 @@ const selectNodeCat = document.getElementById('node-category-select');
 const selectDiagnosticTarget = document.getElementById('diagnostic-target-select');
 const ledgerOutput = document.getElementById('system-ledger-output');
 const queryTerminal = document.getElementById('query-terminal');
+const inputUpdateDesig = document.getElementById('update-designation-input'); // NEW: Update Input
 
 // Pre-loaded Factory Data (Requirement C.1)
 const factoryDefaults = [{
@@ -72,9 +74,7 @@ function executeRenderCycle(filterQuery = "") {
 
   // Search Filter Logic
   if (node.code.toLowerCase().includes(filterQuery.toLowerCase()) || node.desig.toLowerCase().includes(filterQuery.toLowerCase())) {
-
    let statusClass = node.status !== "Operational" ? "status-issue" : "";
-
    const packetHTML = `
                 <div class="node-packet ${statusClass}">
                     <h3>${node.desig}</h3>
@@ -139,15 +139,42 @@ window.openNodeInterface = function (code) {
  activeModalNodeCode = code;
  document.getElementById('modal-node-title').innerText = `[${node.code}] ${node.desig}`;
 
- // Auto-Generate QR Code using Free Image API based on the Asset Code
+ // Pre-fill the update input with current designation
+ inputUpdateDesig.value = node.desig;
+
+ // Auto-Generate QR Code using dynamic window.location.origin
+ const currentUrl = window.location.origin;
  document.getElementById('qr-render-sector').innerHTML = `
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://yourusername.github.io/MaintainIQ-Core/public-asset.html?code=${node.code}&bgcolor=0f172a&color=38bdf8" alt="QR Code" style="border: 2px solid #38bdf8; border-radius: 4px;">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentUrl}/public-asset.html?code=${node.code}&bgcolor=0f172a&color=38bdf8" alt="QR Code" style="border: 2px solid #38bdf8; border-radius: 4px;">
     `;
 
+ // Fixed the broken HTML tags in the history log
  const historyBox = document.getElementById('modal-history-log');
  historyBox.innerHTML = node.history.map(log => `<div style="margin-bottom: 5px;">> ${log}</div>`).join('');
 
  document.getElementById('history-modal').classList.remove('hidden');
+}
+
+// Core Function: Update Existing Node Data (NEW)
+function updateNodeParameters() {
+ if (!activeModalNodeCode) return;
+
+ const newDesig = inputUpdateDesig.value.trim();
+ if (!newDesig) return alert("Syntax Error: Designation cannot be empty.");
+
+ const node = mainframeStorage.find(n => n.code === activeModalNodeCode);
+ const oldDesig = node.desig;
+
+ if (oldDesig !== newDesig) {
+  node.desig = newDesig;
+  node.history.push(`[SYSTEM UPDATE] Designation modified from '${oldDesig}' to '${newDesig}' - ${new Date().toLocaleTimeString()}`);
+
+  pushToDatabase();
+  closeNodeInterface();
+  executeRenderCycle();
+ } else {
+  alert("System Notice: No changes detected in payload.");
+ }
 }
 
 // Core Function: Resolve Issue (Technician)
@@ -180,6 +207,7 @@ function closeNodeInterface() {
 btnCompileNode.addEventListener('click', compileNewNode);
 btnLogDiagnostic.addEventListener('click', logDiagnosticFailure);
 btnResolveNode.addEventListener('click', resolveNodeFailure);
+btnUpdateNode.addEventListener('click', updateNodeParameters); // Attached Update Listener
 btnCloseModal.addEventListener('click', closeNodeInterface);
 queryTerminal.addEventListener('input', (e) => executeRenderCycle(e.target.value));
 btnWipeMemory.addEventListener('click', () => {
@@ -191,13 +219,15 @@ btnWipeMemory.addEventListener('click', () => {
 
 // Initial Boot
 executeRenderCycle();
-// Target the new AI elements
+
+// ---------------------------------------------------------
+// AI TRIAGE LOGIC
+// ---------------------------------------------------------
 const btnRunTriage = document.getElementById('run-triage-engine-btn');
 const inputComplaint = document.getElementById('ai-complaint-input');
 const inputDiagnosticTitle = document.getElementById('diagnostic-title');
 const inputDiagnosticPriority = document.getElementById('diagnostic-priority');
 
-// Simulated AI Triage Logic (Rule-Based Engine)
 function executeAITriageEngine() {
  const rawPayload = inputComplaint.value.toLowerCase().trim();
 
@@ -205,18 +235,16 @@ function executeAITriageEngine() {
   return alert("Syntax Error: Provide description for AI analysis.");
  }
 
- // Change button text to show processing
  btnRunTriage.innerText = "Analyzing Node Failure...";
 
  setTimeout(() => {
   let aiTitle = "General System Anomaly";
   let aiPriority = "Low";
 
-  // Logic Gates: Checking keywords
   if (rawPayload.includes("flicker") || rawPayload.includes("hdmi") || rawPayload.includes("display")) {
    aiTitle = "Display Output Sync Failure";
    aiPriority = "High";
-  } else if (rawPayload.includes("leak") || rawPayload.includes("water")) {
+  } else if (rawPayload.includes("leak") || rawPayload.includes("water") || rawPayload.includes("cooling")) {
    aiTitle = "Coolant / Liquid Containment Breach";
    aiPriority = "High";
   } else if (rawPayload.includes("hot") || rawPayload.includes("overheat") || rawPayload.includes("fire")) {
@@ -227,22 +255,19 @@ function executeAITriageEngine() {
    aiPriority = "Low";
   }
 
-  // Auto-fill the inputs with the AI result
   inputDiagnosticTitle.value = aiTitle;
   inputDiagnosticPriority.value = aiPriority;
 
-  // Let the user know they can edit it
   inputDiagnosticTitle.removeAttribute('readonly');
   btnRunTriage.innerText = "Triage Complete. Edit if needed.";
-  btnRunTriage.style.background = "#16a34a"; // Turn green
+  btnRunTriage.style.background = "#16a34a";
 
   setTimeout(() => {
    btnRunTriage.innerText = "Run AI Triage Engine";
-   btnRunTriage.style.background = "#0f172a"; // Revert
+   btnRunTriage.style.background = "#0f172a";
   }, 3000);
 
- }, 800); // 800ms delay to make it feel like a real AI processing request
+ }, 800);
 }
 
-// Attach the Event Listener
 btnRunTriage.addEventListener('click', executeAITriageEngine);

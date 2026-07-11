@@ -3,27 +3,22 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family:
-    "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Switched to a clean corporate font */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Professional Enterprise Background */
 body {
-  background-color: #f1f5f9; /* Soft light gray for less eye strain */
+  background-color: #f1f5f9;
   color: #334155;
   padding-bottom: 50px;
 }
 
 /* Saylani Branded Header */
 .system-header {
-  background: linear-gradient(
-    90deg,
-    #1e3a8a,
-    #2563eb
-  ); /* Saylani Deep Blue Gradient */
+  background: linear-gradient(90deg, #1e3a8a, #2563eb);
   padding: 25px 20px;
   text-align: center;
-  border-bottom: 5px solid #16a34a; /* Saylani Vibrant Green Accent */
+  border-bottom: 5px solid #16a34a;
   margin-bottom: 30px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
@@ -59,7 +54,7 @@ body {
   padding: 30px;
   border-radius: 10px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); /* Soft, professional shadow */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
   flex: 1 1 350px;
   transition: transform 0.2s ease-in-out;
 }
@@ -80,12 +75,12 @@ body {
 
 /* Panel Titles */
 .sector-title {
-  color: #1e3a8a; /* Saylani Blue */
+  color: #1e3a8a;
   margin-bottom: 20px;
   font-size: 1.3rem;
   font-weight: 700;
   text-transform: uppercase;
-  border-bottom: 2px solid #16a34a; /* Green underline */
+  border-bottom: 2px solid #16a34a;
   padding-bottom: 8px;
 }
 
@@ -113,7 +108,7 @@ body {
 .compiler-trigger {
   width: 100%;
   padding: 14px;
-  background: #16a34a; /* Saylani Green for primary actions */
+  background: #16a34a;
   color: white;
   border: none;
   border-radius: 6px;
@@ -133,21 +128,21 @@ body {
 
 .error-trigger {
   background: #dc2626;
-} /* Red for Wiping Data */
+}
 .error-trigger:hover {
   background: #b91c1c;
 }
 
 .warning-trigger {
   background: #2563eb;
-} /* Blue for Logging Issues */
+}
 .warning-trigger:hover {
   background: #1d4ed8;
 }
 
 .success-trigger {
   background: #16a34a;
-} /* Green for Resolution */
+}
 .success-trigger:hover {
   background: #15803d;
 }
@@ -165,13 +160,13 @@ body {
   padding: 20px;
   border-radius: 8px;
   border: 1px solid #e2e8f0;
-  border-left: 5px solid #16a34a; /* Green for Operational */
+  border-left: 5px solid #16a34a;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   position: relative;
 }
 
 .node-packet.status-issue {
-  border-left-color: #ef4444; /* Red for Issues */
+  border-left-color: #ef4444;
   background: #fef2f2;
 }
 
@@ -193,6 +188,7 @@ body {
   font-size: 0.85rem;
   margin-top: 15px;
   transition: 0.2s;
+  width: 100%; /* Made full width for better mobile tapping */
 }
 
 .node-action-btn:hover {
@@ -208,12 +204,13 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(15, 23, 42, 0.6); /* Soft dark overlay */
-  backdrop-filter: blur(4px); /* Modern blur effect */
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 15px; /* Added padding so it doesn't touch screen edges on mobile */
 }
 
 .modal-overlay.hidden {
@@ -222,9 +219,9 @@ body {
 
 .modal-sector {
   background: #ffffff;
-  padding: 35px;
+  padding: 30px;
   border-radius: 12px;
-  width: 90%;
+  width: 100%;
   max-width: 550px;
   max-height: 90vh;
   overflow-y: auto;
@@ -241,4 +238,28 @@ body {
   border: 1px solid #cbd5e1;
   border-radius: 6px;
   line-height: 1.5;
+}
+
+/* --- MOBILE RESPONSIVENESS (NEW) --- */
+@media screen and (max-width: 768px) {
+  .system-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .control-panel {
+    flex-direction: column;
+  }
+
+  .data-sector {
+    padding: 20px;
+    flex: 1 1 100%;
+  }
+
+  .output-grid {
+    grid-template-columns: 1fr; /* Stacks cards on top of each other on phones */
+  }
+
+  .modal-sector {
+    padding: 20px;
+  }
 }
