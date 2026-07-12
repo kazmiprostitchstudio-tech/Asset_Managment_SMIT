@@ -14,6 +14,19 @@
         <span>Supervisor: SMuzamil</span>
       </div>
     </header>
+    <button
+      onclick="document.body.classList.toggle('dark-mode')"
+      style="
+        background: transparent;
+        border: 1px solid white;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      "
+    >
+      Toggle Dark Mode
+    </button>
 
     <div class="motherboard-grid">
       <div class="data-sector control-panel">
@@ -111,7 +124,6 @@
 
         <hr style="border-color: #334155; margin: 15px 0" />
 
-        <!-- Fixed: Added the missing Update Asset Section -->
         <h3
           class="sector-title"
           style="font-size: 1rem; color: #d97706; border-bottom-color: #d97706"
@@ -126,6 +138,7 @@
         <button
           id="update-node-btn"
           class="compiler-trigger"
+          onclick="updateNode()"
           style="
             background: #f59e0b;
             color: #ffffff;
@@ -134,6 +147,13 @@
           "
           >Update Payload</button
         >
+        <button
+          class="compiler-trigger"
+          style="background: #64748b; margin-top: 5px"
+          onclick="generateReport()"
+        >
+          Export Maintenance Report
+        </button>
 
         <h3 class="sector-title" style="font-size: 1rem"
           >Technician Interface</h3
@@ -144,10 +164,16 @@
           class="input-terminal"
           placeholder="Enter maintenance notes..."
         />
-        <button id="resolve-node-btn" class="compiler-trigger success-trigger"
+        <button
+          id="resolve-node-btn"
+          class="compiler-trigger success-trigger"
+          onclick="resolveNode()"
           >Resolve & Restore Node</button
         >
-        <button id="close-modal-btn" class="compiler-trigger"
+        <button
+          id="close-modal-btn"
+          class="compiler-trigger"
+          onclick="closeModal()"
           >Terminate Connection (Close)</button
         >
       </div>

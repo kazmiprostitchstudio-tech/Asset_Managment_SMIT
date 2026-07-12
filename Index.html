@@ -3,31 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MaintainIQ - Secure Gateway</title>
+    <title>MaintainIQ | Secure Gateway</title>
     <link rel="stylesheet" href="style.css" />
     <style>
-      /* Extra professional polish for the login page */
-      .login-input {
+      /* Login Specific Enhancements */
+      .login-container {
+        background: white;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         width: 100%;
-        padding: 12px;
-        margin-bottom: 15px;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        background: #f8fafc;
+        max-width: 400px;
+        text-align: center;
       }
-      .login-btn-pro {
-        width: 100%;
-        padding: 14px;
-        background: #2563eb;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.3s;
+      .boot-text {
+        font-family: monospace;
+        font-size: 0.8rem;
+        margin-top: 10px;
+        color: #64748b;
       }
-      .login-btn-pro:hover {
-        background: #1d4ed8;
+      .loading-spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #16a34a;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 10px auto;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
     </style>
   </head>
@@ -40,10 +51,7 @@
       background-color: #f1f5f9;
     "
   >
-    <div
-      class="data-sector"
-      style="max-width: 400px; text-align: center; width: 100%"
-    >
+    <div class="login-container">
       <div
         style="
           background: #1e3a8a;
@@ -52,61 +60,62 @@
           margin-bottom: 25px;
         "
       >
-        <h1 style="color: white; font-size: 1.6rem; letter-spacing: 2px"
+        <h1 style="color: white; font-size: 1.5rem; letter-spacing: 2px"
           >MAINTAIN-IQ</h1
         >
       </div>
 
-      <h2 class="sector-title" style="font-size: 1.1rem; margin-bottom: 25px"
-        >Admin Authentication Protocol</h2
-      >
-
       <input
         type="text"
         id="auth-user"
-        class="login-input"
+        class="input-terminal"
         placeholder="System ID"
         value="admin_smit"
       />
       <input
         type="password"
         id="auth-pass"
-        class="login-input"
+        class="input-terminal"
         placeholder="Passcode"
         value="123456"
       />
 
-      <button id="login-btn" class="login-btn-pro" onclick="handleLogin()"
-        >INITIALIZE SECURE SESSION</button
+      <button
+        id="login-btn"
+        class="compiler-trigger"
+        onclick="runBootSequence()"
+        >INITIALIZE ACCESS</button
       >
 
-      <div
-        id="status-msg"
-        style="
-          margin-top: 15px;
-          color: #1e3a8a;
-          font-weight: bold;
-          font-size: 0.9rem;
-        "
-      ></div>
-
-      <p style="font-size: 0.8rem; color: #64748b; margin-top: 20px"
-        >Authorized Personnel Only</p
-      >
+      <div id="loader" class="loading-spinner"></div>
+      <div id="status-msg" class="boot-text">System Standby</div>
     </div>
 
     <script>
-      function handleLogin() {
+      function runBootSequence() {
+        const user = document.getElementById('auth-user').value;
+        const pass = document.getElementById('auth-pass').value;
         const btn = document.getElementById('login-btn');
         const msg = document.getElementById('status-msg');
+        const loader = document.getElementById('loader');
 
-        btn.innerText = 'VERIFYING ENCRYPTION...';
-        btn.style.background = '#16a34a'; // Green color
-        msg.innerText = 'Connecting to Mainframe...';
+        if (user === '' || pass === '') {
+          alert('Error: Credentials required.');
+          return;
+        }
+
+        // Professional Boot Simulation
+        btn.disabled = true;
+        loader.style.display = 'block';
+        msg.innerText = 'Initiating handshake with server...';
+        btn.innerText = 'AUTHENTICATING...';
 
         setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 1500);
+          msg.innerText = 'Encryption verified. Access granted.';
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 800);
+        }, 2000);
       }
     </script>
   </body>

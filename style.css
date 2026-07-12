@@ -6,6 +6,20 @@
   --danger: #dc2626;
   --bg-body: #f1f5f9;
 }
+/* Dark Mode Colors */
+.dark-mode {
+  --primary: #f8fafc;
+  --secondary: #38bdf8;
+  --bg-body: #0f172a;
+}
+.dark-mode body {
+  background-color: var(--bg-body);
+  color: #e2e8f0;
+}
+.dark-mode .data-sector {
+  background: #1e293b;
+  border: 1px solid #334155;
+}
 
 * {
   box-sizing: border-box;
